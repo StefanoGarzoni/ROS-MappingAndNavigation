@@ -1,0 +1,42 @@
+<launch>
+  <!-- 1) Usa tempo simulato per SLAM -->
+  <param name="/use_sim_time" value="true"/>
+
+  <!-- 2) TF broadcaster: map → base_link -->
+  <node pkg="second_project" type="tf_broadcaster" name="tf_broadcaster" output="screen"/>
+
+  <!-- 3) Static TF per body e tutti i link delle ruote/sterzo -->
+  <node pkg="tf" type="static_transform_publisher" name="body_tf"
+        args="0  0    0  0 0 0  base_link  body_link  100"/>
+  <node pkg="tf" type="static_transform_publisher" name="fl_steer_tf"
+        args="0.27  0.20 0  0 0 0  base_link  front_left_steer_link  100"/>
+  <node pkg="tf" type="static_transform_publisher" name="fl_wheel_tf"
+        args="0.27  0.20 0  0 0 0  base_link  front_left_wheel_link  100"/>
+  <node pkg="tf" type="static_transform_publisher" name="fr_steer_tf"
+        args="0.27 -0.20 0  0 0 0  base_link  front_right_steer_link 100"/>
+  <node pkg="tf" type="static_transform_publisher" name="fr_wheel_tf"
+        args="0.27 -0.20 0  0 0 0  base_link  front_right_wheel_link 100"/>
+  <node pkg="tf" type="static_transform_publisher" name="rl_steer_tf"
+        args="-0.27  0.20 0  0 0 0  base_link  rear_left_steer_link   100"/>
+  <node pkg="tf" type="static_transform_publisher" name="rl_wheel_tf"
+        args="-0.27  0.20 0  0 0 0  base_link  rear_left_wheel_link   100"/>
+  <node pkg="tf" type="static_transform_publisher" name="rr_steer_tf"
+        args="-0.27 -0.20 0  0 0 0  base_link  rear_right_steer_link  100"/>
+  <node pkg="tf" type="static_transform_publisher" name="rr_wheel_tf"
+        args="-0.27 -0.20 0  0 0 0  base_link  rear_right_wheel_link 100"/>
+
+  <!-- 4) Merge dei laser scans front/back -->
+  <node pkg="second_project" type="scan_merger" name="scan_merger" output="screen">
+    <param name="robot_radius" value="0.3"/>
+    <!-- remappa solo se il tuo bag usa nomi diversi: -->
+    <!-- <remap from="/scan_front" to="/sick_front/scan"/> -->
+    <!-- <remap from="/scan_back"  to="/sick_back/scan"/> -->
+  </node>
+
+  <!-- 5) Il tuo SLAM custom che pubblica /map -->
+  <node pkg="second_project" type="occupancy_grid_mapping" name="occupancy_grid_mapping" output="screen"/>
+
+  <!-- 6) RViz per la mappa e i laser -->
+  <node pkg="rviz" type="rviz" name="rviz_mapping" output="screen"
+        args="-d $(find second_project)/rviz/mapping.rviz"/>
+</launch>

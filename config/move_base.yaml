@@ -1,0 +1,35 @@
+# move_base.yaml
+
+# Frequenza del controller
+controller_frequency: 10.0
+
+# Planner globale
+base_global_planner: "navfn/NavfnROS"
+
+# Parametri global costmap
+global_costmap:
+  global_frame: "map"
+  robot_base_frame: "base_link"
+  update_frequency: 5.0
+  static_map: true
+  rolling_window: false
+  width: 20.0
+  height: 20.0
+  resolution: 0.05
+  origin_x: -10.0
+  origin_y: -10.0
+
+# Parametri local costmap
+local_costmap:
+  global_frame: "odom"
+  robot_base_frame: "base_link"
+  update_frequency: 5.0
+  static_map: false
+  rolling_window: true
+  width: 6.0
+  height: 6.0
+  resolution: 0.05
+
+# Trajectory planner settings
+TrajectoryPlannerROS:
+  meter_scoring: true

@@ -1,0 +1,18 @@
+Visualization Manager:
+  Global Options:
+    Fixed Frame: map
+
+  Displays:
+    - Class:    rviz/Map
+      Name:     Map
+      Enabled:  true
+      Topic:    /map
+
+    - Class:    rviz/LaserScan
+      Name:     LaserScan
+      Enabled:  true
+      Topic:    /scan
+
+    - Class:    rviz/TF
+      Name:     TF
+      Enabled:  true

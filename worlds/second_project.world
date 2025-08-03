@@ -1,0 +1,58 @@
+window(
+ size [700 700]
+ scale 35
+)
+
+model(
+ name "wall_north"
+ type "box"
+ size [20 0.1 1.0]
+ pose [0 10 0.5 0 0 0]
+)
+model(
+ name "wall_south"
+ type "box"
+ size [20 0.1 1.0]
+ pose [0 -10 0.5 0 0 0]
+)
+model(
+ name "wall_east"
+ type "box"
+ size [0.1 20 1.0]
+ pose [10 0 0.5 0 0 0]
+)
+model(
+ name "wall_west"
+ type "box"
+ size [0.1 20 1.0]
+ pose [-10 0 0.5 0 0 0]
+)
+
+define mybot position(
+ block(
+  points 4
+  point[0] [-0.27 -0.20]
+  point[1] [0.27 -0.20]
+  point[2] [0.27 0.20]
+  point[3] [-0.27 0.20]
+  z [0 0.10]
+ )
+ drive "diff"
+)
+
+define mybot_laser sensor(
+ size [0.025 0.025 0.025]
+ range [0.10 30.0]
+ fov 360
+ samples 360
+)
+
+define mybot_lasers ranger(
+ mybot_laser(pose [0 0 0.10 0])
+)
+
+mybot(
+ name "robot1"
+ pose [0 0 0 0]
+ mybot_lasers()
+)
